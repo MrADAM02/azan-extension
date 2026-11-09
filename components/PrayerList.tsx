@@ -40,7 +40,7 @@ export function PrayerList({ events, currentKey, nextKey, settings, t, variant }
             >
               <span className="flex items-center gap-2">
                 <span aria-hidden>{ICONS[e.key]}</span>
-                {t.prayer(e.key)}
+                {t.prayerAt(e.key, e.time, tz)}
               </span>
               <span className="tabular">{fmtTime(e.time, tz, settings)}</span>
             </li>
@@ -69,7 +69,7 @@ export function PrayerList({ events, currentKey, nextKey, settings, t, variant }
             <div className="text-2xl" aria-hidden>
               {ICONS[e.key]}
             </div>
-            <div className="mt-1 text-sm font-medium opacity-90">{t.prayer(e.key)}</div>
+            <div className="mt-1 text-sm font-medium opacity-90">{t.prayerAt(e.key, e.time, tz)}</div>
             <div className="tabular mt-1 text-lg font-semibold">{fmtTime(e.time, tz, settings)}</div>
           </div>
         );

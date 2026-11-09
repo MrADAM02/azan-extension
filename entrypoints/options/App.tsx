@@ -247,6 +247,37 @@ function AlertsSection({ s, t, set }: SectionProps) {
           ))}
         </select>
       </Row>
+      <Row label={`🕌 ${t('jumuahRemind')}`}>
+        <select
+          className={control}
+          value={s.jumuah.remindBefore}
+          onChange={(e) => set((x) => ({ ...x, jumuah: { ...x.jumuah, remindBefore: Number(e.target.value) } }))}
+        >
+          {[0, 15, 30, 45, 60, 90].map((n) => (
+            <option key={n} value={n}>
+              {n === 0 ? t('off') : `${n} ${t('minutes')}`}
+            </option>
+          ))}
+        </select>
+      </Row>
+      <Row label={`📖 ${t('kahfRemind')}`}>
+        <Toggle
+          checked={s.jumuah.kahf}
+          onChange={(v) => set((x) => ({ ...x, jumuah: { ...x.jumuah, kahf: v } }))}
+        />
+      </Row>
+      {s.jumuah.kahf && (
+        <Row label={t('kahfTime')}>
+          <input
+            type="time"
+            className={control}
+            value={s.jumuah.kahfTime}
+            onChange={(e) =>
+              e.target.value && set((x) => ({ ...x, jumuah: { ...x.jumuah, kahfTime: e.target.value } }))
+            }
+          />
+        </Row>
+      )}
     </Section>
   );
 }
@@ -420,6 +451,9 @@ function DisplaySection({ s, t, set }: SectionProps) {
       </Row>
       <Row label={t('showQibla')}>
         <Toggle checked={d.showQibla} onChange={(v) => setD({ showQibla: v })} />
+      </Row>
+      <Row label={t('showBadge')}>
+        <Toggle checked={s.badge} onChange={(v) => set((x) => ({ ...x, badge: v }))} />
       </Row>
       <div>
         <div className="mb-2 text-sm">{t('background')}</div>

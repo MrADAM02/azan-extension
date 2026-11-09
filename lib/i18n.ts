@@ -1,4 +1,5 @@
 import type { MethodKey, PrayerKey, Settings } from './schema';
+import { isFriday } from './time';
 
 const en = {
   fajr: 'Fajr',
@@ -78,6 +79,15 @@ const en = {
   hasFile: 'File uploaded',
   noFile: 'No file uploaded',
   feelsLike: 'Feels like',
+  jumuah: "Jumu'ah",
+  jumuahIn: "Jumu'ah prayer in {n} minutes",
+  jumuahRemind: "Jumu'ah reminder",
+  kahfTitle: "It's Friday",
+  kahfMsg: 'Remember to read Surat al-Kahf',
+  kahfRemind: 'Remind me to read Surat al-Kahf on Friday',
+  kahfTime: 'Al-Kahf reminder time',
+  showBadge: 'Show countdown on the toolbar icon',
+  badgeTitle: '{p} at {time} (in {left})',
   bg_dynamic: 'Auto',
   bg_night: 'Night',
   bg_dawn: 'Dawn',
@@ -182,6 +192,15 @@ const ar: Dict = {
   hasFile: 'تم رفع الملف',
   noFile: 'لم يتم رفع ملف',
   feelsLike: 'الإحساس',
+  jumuah: 'الجمعة',
+  jumuahIn: 'صلاة الجمعة بعد {n} دقيقة',
+  jumuahRemind: 'تذكير صلاة الجمعة',
+  kahfTitle: 'يوم الجمعة',
+  kahfMsg: 'لا تنسَ قراءة سورة الكهف',
+  kahfRemind: 'ذكّرني بقراءة سورة الكهف يوم الجمعة',
+  kahfTime: 'وقت تذكير سورة الكهف',
+  showBadge: 'إظهار العد التنازلي على أيقونة الإضافة',
+  badgeTitle: '{p} الساعة {time} (بعد {left})',
   bg_dynamic: 'تلقائي',
   bg_night: 'الليل',
   bg_dawn: 'الفجر',
@@ -217,6 +236,9 @@ export function makeT(lang: Settings['display']['language']) {
     return str;
   };
   t.prayer = (k: PrayerKey) => d[k];
+  /** Like prayer(), but Dhuhr on a Friday (in the location's timezone) is called Jumu'ah. */
+  t.prayerAt = (k: PrayerKey, time: Date, tz: string) =>
+    k === 'dhuhr' && isFriday(time, tz) ? d.jumuah : d[k];
   t.method = (k: MethodKey) => d.methods[k];
   return t;
 }

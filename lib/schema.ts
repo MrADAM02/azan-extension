@@ -53,6 +53,12 @@ export interface Settings {
   adjustments: Record<PrayerKey, number>;
   perPrayer: Record<PrayerKey, { notify: boolean; azan: boolean }>;
   remindBefore: number; // minutes, 0 = off
+  badge: boolean; // countdown on the toolbar icon
+  jumuah: {
+    remindBefore: number; // minutes before Friday dhuhr, 0 = off
+    kahf: boolean; // Friday reminder to read Surat al-Kahf
+    kahfTime: string; // "HH:MM" in the location's timezone
+  };
   audio: {
     sound: 'chime' | 'custom';
     fajrSound: 'same' | SoundId;
@@ -84,6 +90,8 @@ export const DEFAULT_SETTINGS: Settings = {
   adjustments: allPrayers(() => 0),
   perPrayer: allPrayers((k) => ({ notify: k !== 'sunrise', azan: k !== 'sunrise' })),
   remindBefore: 0,
+  badge: true,
+  jumuah: { remindBefore: 30, kahf: true, kahfTime: '10:00' },
   audio: { sound: 'chime', fajrSound: 'same', volume: 0.8, muted: false },
   display: {
     language: 'en',

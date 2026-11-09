@@ -40,7 +40,7 @@ export default function App() {
           <div className="mt-1">
             <div className="text-xs uppercase tracking-wider opacity-75">{t('next')}</div>
             <div className="text-lg font-semibold">
-              {t.prayer(next.key)} {t('in')}{' '}
+              {t.prayerAt(next.key, next.time, loc.timezone)} {t('in')}{' '}
               <span className="tabular">{fmtCountdown(next.time.getTime() - now.getTime(), s)}</span>
             </div>
           </div>

@@ -72,7 +72,7 @@ function Dashboard({ s, t }: { s: Settings; t: T }) {
             <div className="rounded-2xl bg-white/10 px-6 py-3 text-center ring-1 ring-white/20 backdrop-blur-md">
               <div className="text-sm uppercase tracking-wider opacity-75">{t('next')}</div>
               <div className="text-2xl font-semibold">
-                {t.prayer(next.key)} {t('in')}{' '}
+                {t.prayerAt(next.key, next.time, loc.timezone)} {t('in')}{' '}
                 <span className="tabular">{fmtCountdown(next.time.getTime() - now.getTime(), s)}</span>
               </div>
             </div>
