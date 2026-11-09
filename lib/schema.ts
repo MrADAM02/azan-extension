@@ -54,6 +54,7 @@ export interface Settings {
   perPrayer: Record<PrayerKey, { notify: boolean; azan: boolean }>;
   remindBefore: number; // minutes, 0 = off
   badge: boolean; // countdown on the toolbar icon
+  content: { quran: boolean; dhikr: boolean; hadith: boolean }; // New Tab card
   jumuah: {
     remindBefore: number; // minutes before Friday dhuhr, 0 = off
     kahf: boolean; // Friday reminder to read Surat al-Kahf
@@ -97,6 +98,7 @@ export const DEFAULT_SETTINGS: Settings = {
   perPrayer: allPrayers((k) => ({ notify: k !== 'sunrise', azan: k !== 'sunrise' })),
   remindBefore: 0,
   badge: true,
+  content: { quran: true, dhikr: true, hadith: true },
   jumuah: { remindBefore: 30, kahf: true, kahfTime: '10:00' },
   ramadan: { mode: 'auto', imsakMinutes: 10, notifyImsak: true, suhoorBefore: 0 },
   audio: { sound: 'chime', fajrSound: 'same', volume: 0.8, muted: false },

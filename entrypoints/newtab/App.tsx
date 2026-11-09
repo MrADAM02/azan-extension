@@ -10,6 +10,8 @@ import { WeatherWidget } from '@/components/WeatherWidget';
 import { RamadanCard } from '@/components/RamadanCard';
 import { ramadanInfo } from '@/lib/ramadan';
 import { openTimetable } from '@/lib/open';
+import { ContentCard } from '@/components/ContentCard';
+import type { DhikrPeriod } from '@/lib/content';
 import type { T } from '@/lib/i18n';
 
 export default function App() {
@@ -28,6 +30,13 @@ function Dashboard({ s, t }: { s: Settings; t: T }) {
   const events = useMemo(() => getDayTimes(s, loc, 0, now), [s, dayKey]);
   const { current, next } = currentAndNext(s, loc, now);
   const ramadan = ramadanInfo(s, loc, now);
+  // Morning adhkar from Fajr until Dhuhr, evening adhkar from Asr until Isha.
+  const period: DhikrPeriod =
+    current?.key === 'fajr' || (!current && next?.key === 'dhuhr')
+      ? 'morning'
+      : current?.key === 'asr' || current?.key === 'maghrib'
+        ? 'evening'
+        : 'general';
   const bgUrl = useBlobUrl('background', s.display.background === 'custom');
   const bg = bgUrl
     ? `center / cover no-repeat url("${bgUrl}")`
@@ -99,6 +108,8 @@ function Dashboard({ s, t }: { s: Settings; t: T }) {
             t={t}
             variant="cards"
           />
+
+          <ContentCard settings={s} t={t} period={period} />
         </main>
 
         <footer className="flex items-center justify-between text-xs opacity-70">

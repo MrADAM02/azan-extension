@@ -24,3 +24,6 @@ web-ext.config.ts
 *.njsproj
 *.sln
 *.sw?
+
+# downloaded sources for scripts/build-content.mjs
+.content-cache

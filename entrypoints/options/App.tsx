@@ -50,6 +50,8 @@ export default function App() {
       <RamadanSection s={s} t={t} set={set} />
       <AudioSection s={s} t={t} set={set} />
       <DisplaySection s={s} t={t} set={set} />
+      <ContentSection s={s} t={t} set={set} />
+      <SourcesSection t={t} />
       <button
         className={`${btn} text-red-600`}
         onClick={async () => {
@@ -537,6 +539,51 @@ function DisplaySection({ s, t, set }: SectionProps) {
           <FileSlot k="background" label={t('uploadBg')} t={t} onChange={() => setD({ background: 'custom' })} />
         </div>
       </div>
+    </Section>
+  );
+}
+
+function ContentSection({ s, t, set }: SectionProps) {
+  const setC = (patch: Partial<Settings['content']>) => set((x) => ({ ...x, content: { ...x.content, ...patch } }));
+  return (
+    <Section title={`📖 ${t('content')}`}>
+      <Row label={t('showQuran')}>
+        <Toggle checked={s.content.quran} onChange={(v) => setC({ quran: v })} />
+      </Row>
+      <Row label={t('showDhikr')}>
+        <Toggle checked={s.content.dhikr} onChange={(v) => setC({ dhikr: v })} />
+      </Row>
+      <Row label={t('showHadith')}>
+        <Toggle checked={s.content.hadith} onChange={(v) => setC({ hadith: v })} />
+      </Row>
+    </Section>
+  );
+}
+
+const SOURCES: { name: string; url: string; note: string }[] = [
+  { name: 'Tanzil Project', url: 'https://tanzil.net', note: 'Quran text (Uthmani) — CC BY 3.0, reproduced verbatim' },
+  { name: 'Saheeh International', url: 'https://tanzil.net/trans/', note: 'English Quran translation, via Tanzil.net (non-commercial use)' },
+  { name: 'Hadith API (fawazahmed0)', url: 'https://github.com/fawazahmed0/hadith-api', note: "An-Nawawi's Forty Hadith and Forty Hadith Qudsi, Arabic — The Unlicense" },
+  { name: 'Morning & Evening Adhkar DB', url: 'https://github.com/Seen-Arabic/Morning-And-Evening-Adhkar-DB', note: 'Adhkar, Arabic — MIT' },
+  { name: 'Amiri Quran font', url: 'https://github.com/aliftype/amiri', note: 'SIL Open Font License 1.1' },
+  { name: 'adhan-js', url: 'https://github.com/batoulapps/adhan-js', note: 'Prayer time calculation — MIT' },
+  { name: 'Open-Meteo', url: 'https://open-meteo.com', note: 'Weather and city search — CC BY 4.0' },
+  { name: 'BigDataCloud', url: 'https://www.bigdatacloud.com', note: 'City name for detected location' },
+];
+
+function SourcesSection({ t }: { t: T }) {
+  return (
+    <Section title={`🙏 ${t('sources')}`}>
+      <ul className="space-y-2 text-sm">
+        {SOURCES.map((x) => (
+          <li key={x.name} dir="ltr" className="text-start">
+            <a href={x.url} target="_blank" rel="noreferrer" className="font-medium text-emerald-700 hover:underline dark:text-emerald-400">
+              {x.name}
+            </a>
+            <span className="text-slate-500"> — {x.note}</span>
+          </li>
+        ))}
+      </ul>
     </Section>
   );
 }
