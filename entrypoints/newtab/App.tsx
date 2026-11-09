@@ -9,6 +9,7 @@ import { LocationPicker } from '@/components/LocationPicker';
 import { WeatherWidget } from '@/components/WeatherWidget';
 import { RamadanCard } from '@/components/RamadanCard';
 import { ramadanInfo } from '@/lib/ramadan';
+import { openTimetable } from '@/lib/open';
 import type { T } from '@/lib/i18n';
 
 export default function App() {
@@ -51,6 +52,13 @@ function Dashboard({ s, t }: { s: Settings; t: T }) {
               className="rounded-full bg-white/10 p-3 ring-1 ring-white/15 backdrop-blur-md hover:bg-white/20"
             >
               {s.audio.muted ? '🔇' : '🔊'}
+            </button>
+            <button
+              onClick={openTimetable}
+              title={t('timetable')}
+              className="rounded-full bg-white/10 p-3 ring-1 ring-white/15 backdrop-blur-md hover:bg-white/20"
+            >
+              📅
             </button>
             <button
               onClick={() => browser.runtime.openOptionsPage()}

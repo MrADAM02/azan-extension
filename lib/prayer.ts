@@ -60,8 +60,19 @@ export function getDayTimes(
   now = new Date(),
 ): PrayerEvent[] {
   const { y, m, d } = ymdInTz(now, loc.timezone);
+  return getTimesForDate(s, loc, y, m, d + dayOffset);
+}
+
+/** Prayer times for a calendar date (y, m 1-12, d — overflow like d=32 rolls into the next month). */
+export function getTimesForDate(
+  s: Settings,
+  loc: SavedLocation,
+  y: number,
+  m: number,
+  d: number,
+): PrayerEvent[] {
   // adhan reads the local Y/M/D components of this Date, so build it from the city's date.
-  const date = new Date(y, m - 1, d + dayOffset, 12);
+  const date = new Date(y, m - 1, d, 12);
   const coords = new Coordinates(loc.lat, loc.lng);
   const pt = new PrayerTimes(coords, date, buildParams(s, coords));
   return PRAYERS.map((key) => ({ key, time: pt[key] })).filter(

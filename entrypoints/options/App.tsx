@@ -16,6 +16,7 @@ import { BACKGROUNDS } from '@/lib/backgrounds';
 import { deleteBlob, getBlob, putBlob, type BlobKey } from '@/lib/blobStore';
 import { createPlayer } from '@/lib/player';
 import { LocationPicker } from '@/components/LocationPicker';
+import { openTimetable } from '@/lib/open';
 import type { T, TKey } from '@/lib/i18n';
 
 const card = 'rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800';
@@ -35,7 +36,14 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-5 px-4 py-8 text-slate-900 dark:text-slate-100">
-      <h1 className="text-2xl font-semibold">⚙️ {t('settings')}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">⚙️ {t('settings')}</h1>
+        {s.location && (
+          <button className={btn} onClick={openTimetable}>
+            📅 {t('timetable')}
+          </button>
+        )}
+      </div>
       <LocationSection s={s} t={t} set={set} />
       <CalculationSection s={s} t={t} set={set} />
       <AlertsSection s={s} t={t} set={set} />

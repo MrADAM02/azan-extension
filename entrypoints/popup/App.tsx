@@ -5,6 +5,7 @@ import { updateSettings } from '@/lib/settings';
 import { PrayerList } from '@/components/PrayerList';
 import { RamadanCard } from '@/components/RamadanCard';
 import { ramadanInfo } from '@/lib/ramadan';
+import { openTimetable } from '@/lib/open';
 
 export default function App() {
   const s = useSettings();
@@ -71,7 +72,10 @@ export default function App() {
         >
           ⏹ {t('stopAzan')}
         </button>
-        <button className={`${btn} ms-auto`} onClick={() => browser.runtime.openOptionsPage()}>
+        <button className={`${btn} ms-auto`} onClick={openTimetable} title={t('timetable')}>
+          📅
+        </button>
+        <button className={btn} onClick={() => browser.runtime.openOptionsPage()} title={t('settings')}>
           ⚙️
         </button>
       </div>
