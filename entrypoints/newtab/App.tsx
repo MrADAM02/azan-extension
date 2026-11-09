@@ -7,6 +7,8 @@ import { METHOD_KEYS, setLocation, updateSettings, type Settings } from '@/lib/s
 import { PrayerList } from '@/components/PrayerList';
 import { LocationPicker } from '@/components/LocationPicker';
 import { WeatherWidget } from '@/components/WeatherWidget';
+import { RamadanCard } from '@/components/RamadanCard';
+import { ramadanInfo } from '@/lib/ramadan';
 import type { T } from '@/lib/i18n';
 
 export default function App() {
@@ -24,6 +26,7 @@ function Dashboard({ s, t }: { s: Settings; t: T }) {
   // Recompute times once per day (or when settings change) rather than every second.
   const events = useMemo(() => getDayTimes(s, loc, 0, now), [s, dayKey]);
   const { current, next } = currentAndNext(s, loc, now);
+  const ramadan = ramadanInfo(s, loc, now);
   const bgUrl = useBlobUrl('background', s.display.background === 'custom');
   const bg = bgUrl
     ? `center / cover no-repeat url("${bgUrl}")`
@@ -77,6 +80,8 @@ function Dashboard({ s, t }: { s: Settings; t: T }) {
               </div>
             </div>
           )}
+
+          {ramadan && <RamadanCard info={ramadan} settings={s} t={t} now={now} variant="full" />}
 
           <PrayerList
             events={events}

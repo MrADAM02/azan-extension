@@ -59,6 +59,12 @@ export interface Settings {
     kahf: boolean; // Friday reminder to read Surat al-Kahf
     kahfTime: string; // "HH:MM" in the location's timezone
   };
+  ramadan: {
+    mode: 'auto' | 'on' | 'off'; // auto = only during the Hijri month of Ramadan
+    imsakMinutes: number; // Imsak = Fajr minus this many minutes
+    notifyImsak: boolean;
+    suhoorBefore: number; // wake-up reminder N minutes before Fajr, 0 = off
+  };
   audio: {
     sound: 'chime' | 'custom';
     fajrSound: 'same' | SoundId;
@@ -92,6 +98,7 @@ export const DEFAULT_SETTINGS: Settings = {
   remindBefore: 0,
   badge: true,
   jumuah: { remindBefore: 30, kahf: true, kahfTime: '10:00' },
+  ramadan: { mode: 'auto', imsakMinutes: 10, notifyImsak: true, suhoorBefore: 0 },
   audio: { sound: 'chime', fajrSound: 'same', volume: 0.8, muted: false },
   display: {
     language: 'en',

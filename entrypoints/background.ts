@@ -3,12 +3,13 @@ import { currentAndNext, getDayTimes, ymdInTz } from '@/lib/prayer';
 import { makeT } from '@/lib/i18n';
 import { fmtTime } from '@/lib/format';
 import { isFriday, zonedTimeToDate } from '@/lib/time';
+import { isRamadanFast } from '@/lib/ramadan';
 
 const REFRESH = 'refresh';
 const BADGE = 'badge';
 const LATE_LIMIT_MS = 10 * 60_000; // skip alerts if the computer was asleep past the prayer
 
-type AlarmKind = 'prayer' | 'pre' | 'jumuah' | 'kahf';
+type AlarmKind = 'prayer' | 'pre' | 'jumuah' | 'kahf' | 'imsak' | 'suhoor';
 
 export default defineBackground(() => {
   browser.runtime.onInstalled.addListener(async ({ reason }) => {
@@ -58,6 +59,12 @@ async function reschedule() {
       if (pp.notify || pp.azan) await create('prayer', e.key, at, at);
       if (jumuah) await create('jumuah', e.key, at, at - s.jumuah.remindBefore * 60_000);
       else if (s.remindBefore > 0 && pp.notify) await create('pre', e.key, at, at - s.remindBefore * 60_000);
+
+      if (e.key === 'fajr' && isRamadanFast(s, e.time, tz)) {
+        const r = s.ramadan;
+        if (r.suhoorBefore > 0) await create('suhoor', e.key, at, at - r.suhoorBefore * 60_000);
+        if (r.notifyImsak && r.imsakMinutes > 0) await create('imsak', e.key, at, at - r.imsakMinutes * 60_000);
+      }
     }
 
     if (s.jumuah.kahf) {
@@ -93,12 +100,18 @@ async function onAlarm(alarm: { name: string; scheduledTime: number }) {
       return notify('jumuah', t('jumuahIn', { n: s.jumuah.remindBefore }), time, false, s);
     case 'pre':
       return notify(`pre-${key}`, t('inMinutes', { p: name, n: s.remindBefore }), time, false, s);
+    case 'suhoor':
+      return notify('suhoor', t('suhoorWake'), t('suhoorWakeMsg', { time }), false, s);
+    case 'imsak':
+      return notify('imsak', t('imsakNow'), t('imsakMsg', { n: s.ramadan.imsakMinutes, time }), false, s);
   }
 
   const pp = s.perPrayer[key];
   const playAudio = pp.azan && !s.audio.muted && key !== 'sunrise';
   if (pp.notify) {
-    const title = key === 'sunrise' ? name : t('timeFor', { p: name });
+    // Maghrib's civil day is the same as that day's Fajr, so it identifies the fast being broken.
+    const iftar = key === 'maghrib' && isRamadanFast(s, prayerAt, tz);
+    const title = key === 'sunrise' ? name : iftar ? `${t('iftarTime')} · ${name}` : t('timeFor', { p: name });
     await notify(`prayer-${key}`, title, `${time} · ${s.location.city}`, playAudio, s);
   }
   if (playAudio) await playAzan(key, s);

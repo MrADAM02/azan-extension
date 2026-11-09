@@ -39,6 +39,7 @@ export default function App() {
       <LocationSection s={s} t={t} set={set} />
       <CalculationSection s={s} t={t} set={set} />
       <AlertsSection s={s} t={t} set={set} />
+      <RamadanSection s={s} t={t} set={set} />
       <AudioSection s={s} t={t} set={set} />
       <DisplaySection s={s} t={t} set={set} />
       <button
@@ -277,6 +278,47 @@ function AlertsSection({ s, t, set }: SectionProps) {
             }
           />
         </Row>
+      )}
+    </Section>
+  );
+}
+
+function RamadanSection({ s, t, set }: SectionProps) {
+  const r = s.ramadan;
+  const setR = (patch: Partial<Settings['ramadan']>) => set((x) => ({ ...x, ramadan: { ...x.ramadan, ...patch } }));
+  return (
+    <Section title={`🌙 ${t('ramadan')}`}>
+      <Row label={t('ramadanMode')}>
+        <select className={control} value={r.mode} onChange={(e) => setR({ mode: e.target.value as Settings['ramadan']['mode'] })}>
+          <option value="auto">{t('ramadanAuto')}</option>
+          <option value="on">{t('alwaysOn')}</option>
+          <option value="off">{t('off')}</option>
+        </select>
+      </Row>
+      {r.mode !== 'off' && (
+        <>
+          <Row label={t('imsakBefore')}>
+            <select className={control} value={r.imsakMinutes} onChange={(e) => setR({ imsakMinutes: Number(e.target.value) })}>
+              {[0, 5, 10, 15, 20].map((n) => (
+                <option key={n} value={n}>
+                  {n} {t('minutes')}
+                </option>
+              ))}
+            </select>
+          </Row>
+          <Row label={t('notifyImsak')}>
+            <Toggle checked={r.notifyImsak} onChange={(v) => setR({ notifyImsak: v })} />
+          </Row>
+          <Row label={t('suhoorRemind')}>
+            <select className={control} value={r.suhoorBefore} onChange={(e) => setR({ suhoorBefore: Number(e.target.value) })}>
+              {[0, 30, 45, 60, 90, 120].map((n) => (
+                <option key={n} value={n}>
+                  {n === 0 ? t('off') : `${n} ${t('minutes')} ${t('beforeFajr')}`}
+                </option>
+              ))}
+            </select>
+          </Row>
+        </>
       )}
     </Section>
   );

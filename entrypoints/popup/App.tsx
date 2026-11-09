@@ -3,6 +3,8 @@ import { currentAndNext, getDayTimes } from '@/lib/prayer';
 import { fmtCountdown, fmtHijri } from '@/lib/format';
 import { updateSettings } from '@/lib/settings';
 import { PrayerList } from '@/components/PrayerList';
+import { RamadanCard } from '@/components/RamadanCard';
+import { ramadanInfo } from '@/lib/ramadan';
 
 export default function App() {
   const s = useSettings();
@@ -28,6 +30,7 @@ export default function App() {
   const loc = s.location;
   const events = getDayTimes(s, loc, 0, now);
   const { current, next } = currentAndNext(s, loc, now);
+  const ramadan = ramadanInfo(s, loc, now);
 
   return (
     <div className="w-80 text-slate-900 dark:text-slate-100">
@@ -45,6 +48,7 @@ export default function App() {
             </div>
           </div>
         )}
+        {ramadan && <RamadanCard info={ramadan} settings={s} t={t} now={now} variant="compact" />}
       </div>
       <PrayerList
         events={events}
