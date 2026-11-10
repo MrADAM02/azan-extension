@@ -163,7 +163,7 @@ function Onboarding({ s, t }: { s: Settings; t: T }) {
         <span className="opacity-80">{t('method')}</span>
         <select
           value={s.method}
-          onChange={(e) => updateSettings((x) => ({ ...x, method: e.target.value as Settings['method'] }))}
+          onChange={({ target: { value: v } }) => updateSettings((x) => ({ ...x, method: v as Settings['method'] }))}
           className="rounded-xl bg-white/15 px-3 py-2 text-white ring-1 ring-white/30 [&>option]:text-slate-900"
         >
           {METHOD_KEYS.map((m) => (

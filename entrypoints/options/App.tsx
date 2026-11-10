@@ -143,7 +143,7 @@ function CalculationSection({ s, t, set }: SectionProps) {
         <select
           className={control}
           value={s.method}
-          onChange={(e) => set((x) => ({ ...x, method: e.target.value as Settings['method'] }))}
+          onChange={({ target: { value: v } }) => set((x) => ({ ...x, method: v as Settings['method'] }))}
         >
           {METHOD_KEYS.map((m) => (
             <option key={m} value={m}>
@@ -156,7 +156,7 @@ function CalculationSection({ s, t, set }: SectionProps) {
         <select
           className={control}
           value={s.madhab}
-          onChange={(e) => set((x) => ({ ...x, madhab: e.target.value as Settings['madhab'] }))}
+          onChange={({ target: { value: v } }) => set((x) => ({ ...x, madhab: v as Settings['madhab'] }))}
         >
           <option value="shafi">{t('shafi')}</option>
           <option value="hanafi">{t('hanafi')}</option>
@@ -166,7 +166,7 @@ function CalculationSection({ s, t, set }: SectionProps) {
         <select
           className={control}
           value={s.highLat}
-          onChange={(e) => set((x) => ({ ...x, highLat: e.target.value as Settings['highLat'] }))}
+          onChange={({ target: { value: v } }) => set((x) => ({ ...x, highLat: v as Settings['highLat'] }))}
         >
           {(['auto', 'middleofthenight', 'seventhofthenight', 'twilightangle'] as const).map((r) => (
             <option key={r} value={r}>
@@ -188,10 +188,10 @@ function CalculationSection({ s, t, set }: SectionProps) {
                   min={-60}
                   max={60}
                   value={s.adjustments[k]}
-                  onChange={(e) =>
+                  onChange={({ target: { value: v } }) =>
                     set((x) => ({
                       ...x,
-                      adjustments: { ...x.adjustments, [k]: Math.round(Number(e.target.value) || 0) },
+                      adjustments: { ...x.adjustments, [k]: Math.round(Number(v) || 0) },
                     }))
                   }
                   className={`${control} w-full text-center`}
@@ -249,7 +249,7 @@ function AlertsSection({ s, t, set }: SectionProps) {
         <select
           className={control}
           value={s.remindBefore}
-          onChange={(e) => set((x) => ({ ...x, remindBefore: Number(e.target.value) }))}
+          onChange={({ target: { value: v } }) => set((x) => ({ ...x, remindBefore: Number(v) }))}
         >
           {[0, 5, 10, 15, 20, 30].map((n) => (
             <option key={n} value={n}>
@@ -262,7 +262,7 @@ function AlertsSection({ s, t, set }: SectionProps) {
         <select
           className={control}
           value={s.jumuah.remindBefore}
-          onChange={(e) => set((x) => ({ ...x, jumuah: { ...x.jumuah, remindBefore: Number(e.target.value) } }))}
+          onChange={({ target: { value: v } }) => set((x) => ({ ...x, jumuah: { ...x.jumuah, remindBefore: Number(v) } }))}
         >
           {[0, 15, 30, 45, 60, 90].map((n) => (
             <option key={n} value={n}>
@@ -283,8 +283,8 @@ function AlertsSection({ s, t, set }: SectionProps) {
             type="time"
             className={control}
             value={s.jumuah.kahfTime}
-            onChange={(e) =>
-              e.target.value && set((x) => ({ ...x, jumuah: { ...x.jumuah, kahfTime: e.target.value } }))
+            onChange={({ target: { value: v } }) =>
+              v && set((x) => ({ ...x, jumuah: { ...x.jumuah, kahfTime: v } }))
             }
           />
         </Row>
@@ -403,8 +403,8 @@ function AudioSection({ s, t, set }: SectionProps) {
           <select
             className={control}
             value={s.audio.sound}
-            onChange={(e) =>
-              set((x) => ({ ...x, audio: { ...x.audio, sound: e.target.value as Settings['audio']['sound'] } }))
+            onChange={({ target: { value: v } }) =>
+              set((x) => ({ ...x, audio: { ...x.audio, sound: v as Settings['audio']['sound'] } }))
             }
           >
             <option value="madinah-short">{t('madinahShort')}</option>
@@ -422,8 +422,8 @@ function AudioSection({ s, t, set }: SectionProps) {
         <select
           className={control}
           value={s.audio.fajrSound}
-          onChange={(e) =>
-            set((x) => ({ ...x, audio: { ...x.audio, fajrSound: e.target.value as Settings['audio']['fajrSound'] } }))
+          onChange={({ target: { value: v } }) =>
+            set((x) => ({ ...x, audio: { ...x.audio, fajrSound: v as Settings['audio']['fajrSound'] } }))
           }
         >
           <option value="same">{t('same')}</option>
