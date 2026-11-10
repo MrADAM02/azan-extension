@@ -12,9 +12,25 @@ npm run dev        # opens Chrome with the extension loaded and hot reload
 npm run build      # production build in .output/chrome-mv3
 npm run zip        # store-ready zip
 npm run compile    # type-check
+npm test           # unit tests (Vitest)
+npm run test:e2e   # builds, then checks the real extension in Edge/Chrome
+npm run icons      # exports public/icon/*.png from assets/icon/*.svg
+npm run screenshots # store screenshots and promo tile into store/
 ```
 
 To try it in **Edge**, run `npm run build`, open `edge://extensions`, turn on *Developer mode*, then click *Load unpacked* and select `.output/chrome-mv3`.
+
+## Tests
+
+- `tests/*.test.ts` (Vitest, runs in Node with WXT's fake `browser`): prayer times for Makkah, Cairo, London and New York; current/next prayer; timezone and DST handling; Jumu'ah; Hijri dates; Ramadan 1448 Iftar/Suhoor; the monthly timetable; settings storage and country methods; English/Arabic key parity; bundled content, audio and icons; and a guard against `onChange` handlers that read `e.target` inside a deferred settings update (that bug made selects silently not save).
+- `tests/e2e/settings.e2e.mjs`: loads the built extension in headless Edge or Chrome, changes every select on the Settings page, reloads and checks the values were saved, and checks that the New Tab, popup and timetable render without errors. Set `BROWSER_PATH` if your browser is not in a standard location.
+
+## Publishing
+
+- Privacy policy: [PRIVACY.md](PRIVACY.md) (linked from Settings and the store listings).
+- Store text, privacy-tab answers and images: [store/LISTING.md](store/LISTING.md).
+- Step-by-step release checklist: [store/PUBLISHING.md](store/PUBLISHING.md).
+- The extension name and description are translated in `public/_locales/{en,ar}/messages.json`.
 
 ## Structure
 
@@ -56,8 +72,8 @@ The Madinah files were converted to mono Opus (~57 kbps) and normalized by `scri
 
 Hadith and adhkar are shown in Arabic only. The English translations in those datasets come from publishers whose redistribution terms are unclear. If the extension ever becomes paid, the Saheeh International translation needs the publisher's permission.
 
-## Before publishing
+## Icons
 
-- Replace the placeholder WXT icons in `public/icon/`.
-- Write a privacy policy. The location is stored only in browser sync storage, and coordinates are sent only to Open-Meteo (weather/search) and BigDataCloud (city name).
-- Keep the Open-Meteo attribution link (CC BY 4.0). It is shown in the New Tab footer.
+The icon sources are `assets/icon/icon.svg` (48–128 px; the 96 and 128 px icons keep the 16 px transparent padding the Chrome Web Store asks for) and `assets/icon/icon-small.svg` (16 and 32 px, simplified so it stays sharp). Run `npm run icons` after editing them.
+
+Keep the Open-Meteo attribution link (CC BY 4.0) in the New Tab footer.

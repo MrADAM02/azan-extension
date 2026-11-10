@@ -593,6 +593,11 @@ function SourcesSection({ t }: { t: T }) {
           </li>
         ))}
       </ul>
+      <p className="mt-4 text-sm">
+        <a href="https://github.com/MrADAM02/azan-extension/blob/main/PRIVACY.md" target="_blank" rel="noreferrer" className="font-medium text-emerald-700 hover:underline dark:text-emerald-400">
+          🔒 {t('privacy')}
+        </a>
+      </p>
     </Section>
   );
 }

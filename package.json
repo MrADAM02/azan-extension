@@ -12,7 +12,12 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "wxt build && node tests/e2e/settings.e2e.mjs",
+    "icons": "node scripts/gen-icons.mjs",
+    "screenshots": "wxt build && node scripts/screenshots.mjs"
   },
   "dependencies": {
     "@fontsource/amiri-quran": "^5.3.0",
@@ -25,8 +30,11 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@wxt-dev/module-react": "^1.1.5",
+    "puppeteer-core": "^23.11.1",
+    "sharp": "^0.34.3",
     "tailwindcss": "^4.3.4",
     "typescript": "^5.9.3",
+    "vitest": "^4.1.12",
     "web-ext": "^10.5.0",
     "wxt": "^0.21.3"
   }
