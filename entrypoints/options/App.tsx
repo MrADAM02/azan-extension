@@ -407,6 +407,8 @@ function AudioSection({ s, t, set }: SectionProps) {
               set((x) => ({ ...x, audio: { ...x.audio, sound: e.target.value as Settings['audio']['sound'] } }))
             }
           >
+            <option value="madinah-short">{t('madinahShort')}</option>
+            <option value="madinah">{t('madinahFull')}</option>
             <option value="chime">{t('chime')}</option>
             <option value="custom">{t('custom')}</option>
           </select>
@@ -425,6 +427,8 @@ function AudioSection({ s, t, set }: SectionProps) {
           }
         >
           <option value="same">{t('same')}</option>
+          <option value="madinah-short">{t('madinahShort')}</option>
+          <option value="madinah">{t('madinahFull')}</option>
           <option value="chime">{t('chime')}</option>
           <option value="custom">{t('custom')}</option>
           <option value="custom-fajr">{t('customFajr')}</option>
@@ -565,6 +569,11 @@ const SOURCES: { name: string; url: string; note: string }[] = [
   { name: 'Saheeh International', url: 'https://tanzil.net/trans/', note: 'English Quran translation, via Tanzil.net (non-commercial use)' },
   { name: 'Hadith API (fawazahmed0)', url: 'https://github.com/fawazahmed0/hadith-api', note: "An-Nawawi's Forty Hadith and Forty Hadith Qudsi, Arabic — The Unlicense" },
   { name: 'Morning & Evening Adhkar DB', url: 'https://github.com/Seen-Arabic/Morning-And-Evening-Adhkar-DB', note: 'Adhkar, Arabic — MIT' },
+  {
+    name: "Azan recording, Prophet's Mosque (ejaz215, Freesound)",
+    url: 'https://commons.wikimedia.org/wiki/File:33937_ejaz215_call-to-prayer-from-the-prophet-s-mo.ogg',
+    note: 'CC BY 3.0. Converted to mono Opus, levels normalized; the short version ends after the opening takbir',
+  },
   { name: 'Amiri Quran font', url: 'https://github.com/aliftype/amiri', note: 'SIL Open Font License 1.1' },
   { name: 'adhan-js', url: 'https://github.com/batoulapps/adhan-js', note: 'Prayer time calculation — MIT' },
   { name: 'Open-Meteo', url: 'https://open-meteo.com', note: 'Weather and city search — CC BY 4.0' },

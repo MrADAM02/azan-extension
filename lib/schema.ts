@@ -19,7 +19,9 @@ export const METHOD_KEYS = [
 export type MethodKey = (typeof METHOD_KEYS)[number];
 
 export type HighLatRule = 'auto' | 'middleofthenight' | 'seventhofthenight' | 'twilightangle';
-export type SoundId = 'chime' | 'custom' | 'custom-fajr';
+export type SoundId = 'madinah' | 'madinah-short' | 'chime' | 'custom' | 'custom-fajr';
+/** Bundled recordings in public/audio (see README for credits). */
+export const BUILTIN_SOUNDS = { 'madinah': '/audio/madinah-full.ogg', 'madinah-short': '/audio/madinah-short.ogg', 'chime': '/audio/chime.wav' } as const;
 
 export interface SavedLocation {
   lat: number;
@@ -67,7 +69,7 @@ export interface Settings {
     suhoorBefore: number; // wake-up reminder N minutes before Fajr, 0 = off
   };
   audio: {
-    sound: 'chime' | 'custom';
+    sound: Exclude<SoundId, 'custom-fajr'>;
     fajrSound: 'same' | SoundId;
     volume: number; // 0..1
     muted: boolean;
@@ -101,7 +103,7 @@ export const DEFAULT_SETTINGS: Settings = {
   content: { quran: true, dhikr: true, hadith: true },
   jumuah: { remindBefore: 30, kahf: true, kahfTime: '10:00' },
   ramadan: { mode: 'auto', imsakMinutes: 10, notifyImsak: true, suhoorBefore: 0 },
-  audio: { sound: 'chime', fajrSound: 'same', volume: 0.8, muted: false },
+  audio: { sound: 'madinah-short', fajrSound: 'same', volume: 0.8, muted: false },
   display: {
     language: 'en',
     clock: '12h',
